@@ -69,10 +69,6 @@ app.use(hpp());
 
 app.use(cookieParser());
 
-app.use("/uploads", express.static(__dirname + "/public/uploads"));
-app.use("/html", express.static(__dirname + "/public/html"));
-app.use("/", express.static(__dirname + "/client/build"));
-
 app.use(express.json());
 
 app.use(fileUpload());
@@ -88,17 +84,17 @@ app.use(xss());
 // MongoDB дэх халдлагаас хамгаална
 app.use(mongoSanitize());
 
-app.use("/api/v1/users", userRoute);
-app.use("/api/v1/cars", carRoute);
-app.use("/api/v1/carFirms", carFirmRoute);
-app.use("/api/v1/address", addressRoute);
-app.use("/api/v1/history", historyRoute);
-app.use("/api/v1/userRoute", userRouteRoute);
-app.use("/api/v1/driverRoute", driverRouteRoute);
-app.use("/api/v1/rank", rankRoute);
-app.use("/api/v1/userCar", userCarRoute);
-app.use("/api/v1/trip", tripRoute);
-app.use("/api/v1/notification", notificationRoute);
+app.use("/users", userRoute);
+app.use("/cars", carRoute);
+app.use("/carFirms", carFirmRoute);
+app.use("/address", addressRoute);
+app.use("/history", historyRoute);
+app.use("/userRoute", userRouteRoute);
+app.use("/driverRoute", driverRouteRoute);
+app.use("/rank", rankRoute);
+app.use("/userCar", userCarRoute);
+app.use("/trip", tripRoute);
+app.use("/notification", notificationRoute);
 app.use("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "./client/build", "index.html"));
 });
@@ -106,7 +102,6 @@ app.use("/*", (req, res) => {
 app.use(errorHandler);
 
 const server = app.listen(process.env.PORT, () => {
-  
   console.log(`server ${process.env.PORT} амжилттай ажиллаа`);
 });
 

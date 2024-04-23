@@ -1,28 +1,14 @@
 const mongoose = require("mongoose");
 
-const addressShema = new mongoose.Schema({
-    fromLocationCoords: {
-        type: String,
-        required: [true, "Эхлэх цэгийг оруулна уу!"],
-    },
-    fromLocationName: {
-        type: String,
-        required: [true, "Эхлэх цэгийн нэрийг оруулна уу!"],
-        trim: true,
-    },
-    toLocationCoords: {
-        type: String,
-        required: [true, "Очих цэгийг оруулна уу!"],
-    },
-    fromLocationName: {
-        type: String,
-        required: [true, "Очих цэгийн нэрийг оруулна уу!"],
-        trim: true,
-    },
-    userId: {
-        type: mongoose.Schema.ObjectId,
-        ref: "user",
-      },
+const AddressSchema = new mongoose.Schema({
+  homeLocationCoords: String,
+  homeLocationName: String,
+  workLocationCoords: String,
+  workLocationName: String,
+  userId: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+  },
 });
 
-module.exports = mongoose.model('Address', addressShema);
+module.exports = mongoose.model("Address", AddressSchema);
