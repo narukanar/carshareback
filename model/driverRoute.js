@@ -40,6 +40,7 @@ const driverRouteShema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "User",
   },
+  routePolyline: String,
   passengerCount: Number,
 });
 
