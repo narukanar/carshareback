@@ -15,6 +15,10 @@ const driverRouteShema = new mongoose.Schema({
     type: String,
     required: [true, "Очих цэгийг оруулна уу!"],
   },
+  toLocationName: {
+    type: String,
+    required: [true, "Очих цэгийг оруулна уу!"],
+  },
   fromLocationName: {
     type: String,
     required: [true, "Очих цэгийн нэрийг оруулна уу!"],
@@ -34,9 +38,9 @@ const driverRouteShema = new mongoose.Schema({
   },
   userId: {
     type: mongoose.Schema.ObjectId,
-    ref: "user",
+    ref: "User",
   },
   passengerCount: Number,
 });
 
-module.exports = mongoose.model("driverRoutes", driverRouteShema);
+module.exports = mongoose.model("DriverRoute", driverRouteShema);

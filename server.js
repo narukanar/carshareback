@@ -84,6 +84,8 @@ app.use(xss());
 // MongoDB дэх халдлагаас хамгаална
 app.use(mongoSanitize());
 
+app.use("/uploads", express.static(__dirname + "/public/uploads"));
+
 app.use("/users", userRoute);
 app.use("/cars", carRoute);
 app.use("/carFirms", carFirmRoute);

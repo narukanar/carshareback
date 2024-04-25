@@ -4,6 +4,7 @@ const MyError = require("../utils/myError");
 
 exports.getAllCarFirms = asyncHandler(async (req, res, next) => {
   const carFirms = await CarFirm.find().sort({ firm: 1 });
+  console.log("carFirms", carFirms);
 
   if (!carFirms) {
     throw new MyError("Машин олдсонгүй", 500);
