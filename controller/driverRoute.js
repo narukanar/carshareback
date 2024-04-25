@@ -26,27 +26,33 @@ exports.getInRouteDriverRoutes = asyncHandler(async (req, res, next) => {
   if (!route) {
     throw new MyError("Хэрэглэгчийн чиглэл олдсонгүй", 500);
   }
-  const positionArr = req.params.coordinate.split(",");
-  const position = {
-    latitude: parseFloat(positionArr[0]),
-    longitude: parseFloat(positionArr[1]),
-  };
   let routeArr = [];
-  route.forEach((route) => {
-    if (route.routePolyline) {
-      const decodedPoints = decode(route.routePolyline);
-      const coordinates = decodedPoints.map((point) => ({
-        latitude: point[0],
-        longitude: point[1],
-      }));
+  if (req.params.coordinate) {
+    const positionArr = req.params.coordinate.split(",");
+    const position = {
+      latitude: parseFloat(positionArr[0]),
+      longitude: parseFloat(positionArr[1]),
+    };
+    route.forEach((route) => {
+      if (route.routePolyline) {
+        const decodedPoints = decode(route.routePolyline);
+        const coordinates = decodedPoints.map((point) => ({
+          latitude: point[0],
+          longitude: point[1],
+        }));
 
-      const isIncluded = isPositionIncludedInRoute(coordinates, position, 0.2);
+        const isIncluded = isPositionIncludedInRoute(
+          coordinates,
+          position,
+          0.2
+        );
 
-      if (isIncluded) {
-        routeArr.push(route);
+        if (isIncluded) {
+          routeArr.push(route);
+        }
       }
-    }
-  });
+    });
+  }
 
   res.status(200).json({ success: true, data: routeArr });
 });

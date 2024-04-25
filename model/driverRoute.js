@@ -40,6 +40,10 @@ const driverRouteShema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "User",
   },
+  car: {
+    type: mongoose.Schema.ObjectId,
+    ref: "userCars",
+  },
   routePolyline: String,
   passengerCount: Number,
 });

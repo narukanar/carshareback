@@ -25,6 +25,7 @@ const rankRoute = require("./routes/rank");
 const userCarRoute = require("./routes/userCar");
 const tripRoute = require("./routes/trip");
 const notificationRoute = require("./routes/notification");
+const requestRoute = require("./routes/request");
 const admin = require("firebase-admin");
 
 dotenv.config({ path: "./config/config.env" });
@@ -97,9 +98,10 @@ app.use("/rank", rankRoute);
 app.use("/userCar", userCarRoute);
 app.use("/trip", tripRoute);
 app.use("/notification", notificationRoute);
-app.use("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "./client/build", "index.html"));
-});
+app.use("/request", requestRoute);
+// app.use("/*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "./client/build", "index.html"));
+// });
 
 app.use(errorHandler);
 

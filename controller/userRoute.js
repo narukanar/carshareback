@@ -31,6 +31,17 @@ exports.getUserRoute = asyncHandler(async (req, res, next) => {
 });
 
 exports.addUserRoute = asyncHandler(async (req, res, next) => {
+  const before = await UserRoute.find({
+    fromLocationCoords: req.body.fromLocationCoords,
+    fromLocationName: req.body.fromLocationName,
+    toLocationCoords: req.body.toLocationCoords,
+    toLocationName: req.body.toLocationName,
+    date: req.body.date,
+    userId: req.params.userId,
+  });
+  if (before) {
+    throw new MyError("Өмнө энэ чиглэлийг оруулсан байна.", 204);
+  }
   const route = await UserRoute.create({
     ...req.body,
     userId: req.params.userId,
@@ -44,11 +55,9 @@ exports.addUserRoute = asyncHandler(async (req, res, next) => {
 });
 
 exports.updateUserRoute = asyncHandler(async (req, res, next) => {
-  const route = await UserRoute.findOneAndReplace(
-    { userId: req.params.userId },
-    { ...req.body, userId: req.params.userId },
-    { new: true }
-  );
+  const route = await UserRoute.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
 
   if (!route) {
     throw new MyError("Хэрэглэгчийн чиглэл алдаа гарлаа", 500);
