@@ -39,7 +39,7 @@ exports.addUserRoute = asyncHandler(async (req, res, next) => {
     date: req.body.date,
     userId: req.params.userId,
   });
-  if (before) {
+  if (before && Array.isArray(before) && before.length > 0) {
     throw new MyError("Өмнө энэ чиглэлийг оруулсан байна.", 204);
   }
   const route = await UserRoute.create({

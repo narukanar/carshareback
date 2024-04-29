@@ -92,7 +92,9 @@ exports.uploadUserProfile = asyncHandler(async (req, res, next) => {
     throw new MyError("Та зураг upload хийнэ үү.", 400);
   }
 
-  file.name = `user_profile${req.params.id}${path.parse(file.name).ext}`;
+  file.name = `user_profile${req.params.id}${Math.ceil(Math.random() * 100)}${
+    path.parse(file.name).ext
+  }`;
 
   file.mv(`./public/uploads/${file.name}`, async (err) => {
     if (err) {

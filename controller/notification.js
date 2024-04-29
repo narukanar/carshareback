@@ -2,14 +2,24 @@ const asyncHandler = require("../middleware/asyncHandler");
 const Notification = require("../model/notification");
 const MyError = require("../utils/myError");
 
+exports.getUserAcceptedHistory = asyncHandler(async (req, res, next) => {
+  const notif = await Notification.find({
+    passengerUserId: req.params.userId,
+    status: "1",
+  })
+    .populate("driverId")
+    .populate("driverRouteId");
+
+  if (!notif) {
+    throw new MyError("Хэрэглэгчийн notification дуудахад алдаа гарлаа", 400);
+  }
+  res.status(200).json({ success: true, data: notif });
+});
+
 exports.getUserAllNotification = asyncHandler(async (req, res, next) => {
   const notif = await Notification.find({
-    $or: [
-      { passengerUserId: req.params.userId },
-      { driverId: req.params.userId },
-    ],
+    passengerUserId: req.params.userId,
   })
-    .populate("passengerUserId")
     .populate("driverId")
     .populate("driverRouteId");
 

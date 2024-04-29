@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const RequestShema = new mongoose.Schema({
   date: {
     type: Date,
-    required: [true, "Огноо оруулна уу!"],
+    default: Date.now(),
   },
   userId: {
     type: mongoose.Schema.ObjectId,
@@ -16,9 +16,11 @@ const RequestShema = new mongoose.Schema({
   },
   driverRouteId: {
     type: mongoose.Schema.ObjectId,
-    ref: "driverRoute",
+    ref: "DriverRoute",
   },
-  status: String,
+  status: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Request", RequestShema);

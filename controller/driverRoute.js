@@ -58,7 +58,11 @@ exports.getInRouteDriverRoutes = asyncHandler(async (req, res, next) => {
 });
 
 exports.getDriverRoute = asyncHandler(async (req, res, next) => {
-  const route = await DriverRoute.find({ userId: req.params.userId })
+  const date = new Date();
+  const route = await DriverRoute.find({
+    userId: req.params.userId,
+    date: { $gte: date },
+  })
     .populate("userId")
     .populate("car");
 

@@ -9,13 +9,14 @@ const NotificationSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "User",
   },
-  userRouteId: {
-    type: mongoose.Schema.ObjectId,
-    ref: "UserRoutes",
-  },
   driverRouteId: {
     type: mongoose.Schema.ObjectId,
-    ref: "DriverRoutes",
+    ref: "DriverRoute",
+  },
+  status: String,
+  date: {
+    type: Date,
+    default: Date.now(),
   },
 });
 
