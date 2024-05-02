@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("../model/user");
 const asyncHandler = require("../middleware/asyncHandler");
+const sendGridEmailSender = require("../utils/sendGridMailSender");
 const MyError = require("../utils/myError.js");
 const path = require("path");
 
@@ -111,5 +112,73 @@ exports.uploadUserProfile = asyncHandler(async (req, res, next) => {
       success: true,
       data: file.name,
     });
+  });
+});
+
+exports.forgotPassword = asyncHandler(async (req, res, next) => {
+  if (!req.body.email) {
+    throw new MyError("Имэйл дамжуулна уу", 400);
+  }
+
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+    throw new MyError("Хэрэглэгч олдсонгүй");
+  }
+
+  const resetCode = user.generateResetPasswordToken();
+  await user.save();
+
+  sendGridEmailSender({
+    to: `${req.body.email}`,
+    html: `<b>Сайн байна уу</b><br><br>Та нууц үг сэргээх хүсэлт гаргасан байна. <br> Таний нууц үг сэргээх код: ${resetCode}`,
+  });
+  res.status(200).json({
+    success: true,
+  });
+});
+
+exports.resetPassword = asyncHandler(async (req, res, next) => {
+  const { token, email } = req.body;
+
+  if (!token) {
+    throw new MyError("код дамжуулна уу", 400);
+  }
+
+  const user = await User.findOne({
+    email: email,
+    resetPasswordToken: token,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    throw new MyError("Токен, Имэйл шалгана уу", 400);
+  }
+
+  res.status(200).json({
+    success: true,
+  });
+});
+
+exports.newPassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne({
+    resetPasswordToken: req.body.token,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    throw new MyError("Токен хүчингүй байна", 400);
+  }
+
+  user.password = req.body.password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    user,
+    token: user.getJWT(),
   });
 });

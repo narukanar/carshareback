@@ -5,6 +5,9 @@ const {
   uploadUserProfile,
   updateUser,
   getUser,
+  forgotPassword,
+  newPassword,
+  resetPassword,
 } = require("../controller/user");
 
 const router = express.Router();
@@ -14,5 +17,9 @@ router.route("/:id").get(getUser);
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 router.route("/userProfileImage/:id").post(uploadUserProfile);
+
+router.route("/forgot-password").post(forgotPassword);
+router.route("/check-token").post(resetPassword);
+router.route("/reset-password").post(newPassword);
 
 module.exports = router;

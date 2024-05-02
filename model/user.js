@@ -48,6 +48,7 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     select: false,
   },
+  resetPasswordToken: String,
 });
 // хадгалхын өмнө нууц үг шалгана
 UserSchema.pre("save", async function (next) {
