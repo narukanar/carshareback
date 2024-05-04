@@ -53,6 +53,10 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  rateCount: {
+    type: Number,
+    default: 0,
+  },
 });
 // хадгалхын өмнө нууц үг шалгана
 UserSchema.pre("save", async function (next) {

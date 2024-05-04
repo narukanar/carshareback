@@ -31,6 +31,26 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
   });
 });
 
+exports.rateUser = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    throw new MyError("Хэрэглэгчийн мэдээлэл засах амжилтгүй боллоо", 500);
+  }
+
+  const count = user.rateCount + 1;
+
+  const avg = (user.rating * user.rateCount + req.body.rating) / count;
+  user.rateCount = count;
+  user.rating = Math.ceil(avg);
+
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
+});
+
 exports.registerUser = asyncHandler(async (req, res, next) => {
   const user = await User.create(req.body);
 

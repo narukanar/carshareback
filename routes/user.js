@@ -8,12 +8,14 @@ const {
   forgotPassword,
   newPassword,
   resetPassword,
+  rateUser,
 } = require("../controller/user");
 
 const router = express.Router();
 
 router.route("/:id").put(updateUser);
 router.route("/:id").get(getUser);
+router.route("/rating/:id").post(rateUser);
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 router.route("/userProfileImage/:id").post(uploadUserProfile);
