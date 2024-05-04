@@ -19,7 +19,7 @@ const RequestShema = new mongoose.Schema({
     ref: "DriverRoute",
   },
   status: {
-    type: String,
+    type: String, // 1 - accept, 2 - decline, 3 - from user route
   },
 });
 
